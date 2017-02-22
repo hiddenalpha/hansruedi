@@ -2,7 +2,7 @@
 var photobook = photobook || {};
 
 photobook.imageService = (function() {
-    var _imgBaseUrl = '../api-v1.php/images/';
+    var _imgBaseUrl = 'api-v1.php/images/';
 
     function _appendImagesToDom(images) {
         var baseElem = '';
