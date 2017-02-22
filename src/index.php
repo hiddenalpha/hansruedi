@@ -7,7 +7,7 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<!-- Fonts from Google -->
-		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
 
 		<!-- Stylesheets -->
 		<link href="client/assets/app.css" rel="stylesheet">
@@ -28,8 +28,17 @@
 	</head>
 
 	<body>
+		<div id="allContent">
 
-		<div id="imgContainer"></div>
+			<section>
+				<h1>Super Fancy Photo Page! =)</h1>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			</section>
 
+			<section>
+				<div id="imgContainer"></div>
+			</section>
+
+		</div>
 	</body>
 </html>

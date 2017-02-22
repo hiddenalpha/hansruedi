@@ -1,17 +1,36 @@
+/* General styles & reset */
+
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     width: 100vw;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-#imgContainer {
+section {
+    margin: 15px 0;
+    padding: 0 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Slabo 27px', serif;
+    font-weight: 300;
+}
+
+#allContent {
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
+}
+
+
+/* Image related styles */
+
+#imgContainer {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -19,6 +38,11 @@ body {
 
 .imgWrapper {
     margin-bottom: 25px;
+    align-self: center;
+}
+
+.imgWrapper:last-child {
+    margin-bottom: 0;
 }
 
 .imgWrapper, .imgWrapper img {

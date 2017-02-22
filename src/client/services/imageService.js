@@ -13,13 +13,12 @@ photobook.imageService = (function() {
         });
 
         $("#imgContainer").append(baseElem);
-
-        //Testing only!
-        console.log(images);
     }
 
+    //Gets all image urls from server, then appends them to the dom
     function getImages() {
-        $.ajax('api-v1.php/images').then(_appendImagesToDom);
+        var endpointUrl = 'api-v1.php/images';
+        $.ajax(endpointUrl).then(_appendImagesToDom);
     }
 
     return {
