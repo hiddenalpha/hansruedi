@@ -1,0 +1,48 @@
+<?php
+
+
+class Environment {
+
+
+	private $instances;
+
+
+	public function __construct() {
+		$this->instances = Array();
+	}
+
+
+	public function __get( $key ){
+		switch( $key ){
+
+			case 'fileHelper':
+				if( empty($this->instances['fileHelper']) ){
+					require_once( "server/FileHelper.php" );
+					$this->instances['fileHelper'] = new FileHelper();
+				}
+				return $this->instances['fileHelper'];
+
+			case 'restRequestHandler':
+				if( empty($this->instances['restRequestHandler']) ){
+					require_once( "server/RestRequestHandler.php" );
+					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->imageHelper , $this->fileHelper , $this->imagePath );
+				}
+				return $this->instances['restRequestHandler'];
+
+			case 'imageHelper':
+				if( empty($this->instances['imageHelper']) ){
+					require_once( "server/ImageHelper.php" );
+					$this->instances['imageHelper'] = new ImageHelper();
+				}
+				return $this->instances['imageHelper'];
+
+			case 'imagePath':
+				return "images/";
+
+			default:
+				throw new Exception( "No such implementation configured: '$key'." );
+		}
+	}
+
+}
+
