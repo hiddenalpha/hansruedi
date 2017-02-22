@@ -5,7 +5,7 @@
 	// Choose the object to use as module.
 	var module = window.photobook = window.photobook || {};
 
-	var maxRetryCount = 500;
+	var maxRetryCount = 400;
 	var retryInterval = 10;
 
 
@@ -69,7 +69,7 @@
 						}}
 					});
 					args.callback.apply( callbackThis , dependencies );
-				});
+				}, retryInterval );
 			}());
 		}}
 
