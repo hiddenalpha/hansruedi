@@ -25,16 +25,9 @@ class Environment {
 			case 'restRequestHandler':
 				if( empty($this->instances['restRequestHandler']) ){
 					require_once( "server/RestRequestHandler.php" );
-					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->imageHelper , $this->fileHelper , $this->imagePath );
+					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imagePath );
 				}
 				return $this->instances['restRequestHandler'];
-
-			case 'imageHelper':
-				if( empty($this->instances['imageHelper']) ){
-					require_once( "server/ImageHelper.php" );
-					$this->instances['imageHelper'] = new ImageHelper();
-				}
-				return $this->instances['imageHelper'];
 
 			case 'imagePath':
 				return "images/";
