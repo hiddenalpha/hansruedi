@@ -13,7 +13,8 @@
 		<link href="client/assets/app.css" rel="stylesheet">
 
 		<!-- jquery-3 - library -->
-		<script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+		<script type="text/javascript" src="client/assets/libs/jquery/jquery.min.js"></script>
 
 		<!-- module (must be first include) -->
 		<script type="text/javascript" src="client/app.module.js"></script>
@@ -29,6 +30,10 @@
 
 	<body>
 		<div id="allContent">
+			
+			<noscript>
+				<p>Sorry. Diese App läuft ohne Javascript nicht :(</p>
+			</noscript>
 
 			<section>
 				<h1>Super Fancy Photo Page! =)</h1>
