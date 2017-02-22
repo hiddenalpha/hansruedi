@@ -3,13 +3,11 @@
 
 class RestRequestHandler {
 
-	private $imageHelper;
 	private $fileHelper;
 	private $imagePath;
 	
 
-	public function __construct( ImageHelper $imageHelper , FileHelper $fileHelper , $imagePath ){
-		$this->imageHelper = $imageHelper;
+	public function __construct( FileHelper $fileHelper , $imagePath ){
 		$this->fileHelper = $fileHelper;
 		$this->imagePath = $imagePath;
 	}
@@ -56,7 +54,7 @@ class RestRequestHandler {
 		$file = $this->imagePath . $id;
 		if( file_exists($file) ){
 			$ext = $this->fileHelper->getExtension( $file );
-			$mime = $this->imageHelper->getMimeOfExtension( $ext );
+			$mime = $this->fileHelper->getMimeOfExtension( $ext );
 			header( "Content-Type: $mime" );
 			readfile( $file );
 		}else{
