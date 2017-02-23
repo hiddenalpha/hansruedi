@@ -25,12 +25,15 @@ class Environment {
 			case 'restRequestHandler':
 				if( empty($this->instances['restRequestHandler']) ){
 					require_once( "server/RestRequestHandler.php" );
-					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imagePath );
+					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imagePath , $this->videoPath );
 				}
 				return $this->instances['restRequestHandler'];
 
 			case 'imagePath':
 				return "images/";
+
+			case 'videoPath':
+				return "videos/";
 
 			default:
 				throw new Exception( "No such implementation configured: '$key'." );

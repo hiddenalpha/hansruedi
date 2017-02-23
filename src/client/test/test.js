@@ -13,7 +13,7 @@
 	photobook.await(
 		[        'exampleComponent'],
 		function( exampleComponent ){
-			console.log( "entry point is ready now. Let's use component to print a message:" );
+			console.log( "entry point is ready now. Let's use injected instance to print a message:" );
 			exampleComponent.printSomething();
 		}
 	);
