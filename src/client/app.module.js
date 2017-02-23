@@ -2,10 +2,21 @@
 	'use strict';
 
 
+	/**
+	 *
+	 * This file contains a really simple dependency injector. Which provides a minimal interface to
+	 * await other modules.
+	 *
+	 */
+
+
 	// Choose the object to use as module.
 	var module = window.photobook = window.photobook || {};
 
-	var maxRetryCount = 400;
+	/** How many times to re-try to resolve the dependencies for each registered callback. */
+	var maxRetryCount = 100;
+
+	/** Time in milli seconds to wait before try to resolve again. */
 	var retryInterval = 10;
 
 
