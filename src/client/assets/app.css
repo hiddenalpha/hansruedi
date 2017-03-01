@@ -31,26 +31,42 @@ h1, h2, h3, h4, h5, h6 {
 /* Image related styles */
 
 #imgContainer {
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-flow: column wrap;
+    max-height: 100vh;
+    font-size: 0;
+    align-items: center;
 }
 
-.imgWrapper {
-    margin-bottom: 25px;
-    align-self: center;
+#imgContainer .imgWrapper {
+    width: 50%;
 }
 
-.imgWrapper:last-child {
-    margin-bottom: 0;
-}
-
-.imgWrapper, .imgWrapper img {
+#imgContainer .imgWrapper img {
     width: 100%;
 }
 
 @media screen and (min-width: 800px) {
-    .imgWrapper {
-        width: 48%;
+    #imgContainer {
+        max-height: 800px;
+    }
+    #imgContainer .imgWrapper {
+        width: 33.3%;
+    }
+}
+
+
+/* fallback for earlier versions of Firefox */
+
+@supports not (flex-wrap: wrap) {
+    div#imgContainer {
+        display: block;
+    }
+    div#imgContainer .imgWrapper {
+        display: inline-block;
+        vertical-align: top;
     }
 }
