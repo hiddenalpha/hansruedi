@@ -4,30 +4,51 @@
 class Environment {
 
 
+// memory /////////////////////////////////////////////////////////////////////
+
 	private $instances;
 
+
+// instantiation //////////////////////////////////////////////////////////////
 
 	public function __construct() {
 		$this->instances = Array();
 	}
 
 
+// interaction ////////////////////////////////////////////////////////////////
+
 	public function __get( $key ){
+		$instances = $this->instances;
 		switch( $key ){
 
-			case 'fileHelper':
-				if( empty($this->instances['fileHelper']) ){
-					require_once( "server/FileHelper.php" );
-					$this->instances['fileHelper'] = new FileHelper();
+			case 'imageRepository':
+				if( empty($instances['imageRepository']) ){
+					require_once( "server/ImageRepository.php" );
+					$instances['imageRepository'] = new ImageRepository( $this->fileHelper , $this->imagePath );
 				}
-				return $this->instances['fileHelper'];
+				return $instances['imageRepository'];
+
+			case 'videoRepository':
+				if( empty($instances['videoRepository']) ){
+					require_once( "server/VideoRepository.php" );
+					$instances['videoRepository'] = new VideoRepository( $this->fileHelper , $this->videoPath );
+				}
+				return $instances['videoRepository'];
+
+			case 'fileHelper':
+				if( empty($instances['fileHelper']) ){
+					require_once( "server/FileHelper.php" );
+					$instances['fileHelper'] = new FileHelper();
+				}
+				return $instances['fileHelper'];
 
 			case 'restRequestHandler':
-				if( empty($this->instances['restRequestHandler']) ){
+				if( empty($instances['restRequestHandler']) ){
 					require_once( "server/RestRequestHandler.php" );
-					$this->instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imagePath , $this->videoPath );
+					$instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imageRepository , $this->videoRepository , $this->videoPath );
 				}
-				return $this->instances['restRequestHandler'];
+				return $instances['restRequestHandler'];
 
 			case 'imagePath':
 				return "images/";

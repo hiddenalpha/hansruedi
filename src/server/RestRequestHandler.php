@@ -7,15 +7,17 @@ class RestRequestHandler {
 // memory /////////////////////////////////////////////////////////////////////
 
 	private $fileHelper;
-	private $imagePath;
+	private $imageRepository;
+	private $videoRepository;
 	private $videoPath;
 
 
 // instantiation //////////////////////////////////////////////////////////////
 
-	public function __construct( FileHelper $fileHelper , $imagePath , $videoPath ){
+	public function __construct( FileHelper $fileHelper , ImageRepository $imageRepository , VideoRepository $videoRepository , $videoPath ){
 		$this->fileHelper = $fileHelper;
-		$this->imagePath = $imagePath;
+		$this->imageRepository = $imageRepository;
+		$this->videoRepository = $videoRepository;
 		$this->videoPath = $videoPath;
 	}
 
@@ -57,58 +59,42 @@ class RestRequestHandler {
 	}
 
 	private function printImageList(){
-		$paths = scandir( $this->imagePath );
+		$images = $this->imageRepository->getImages();
 		header( "Content-Type: application/json" );
-		echo "[";
-		$isFirst = true;
-		foreach( $paths AS $path ){
-			$file = basename( $path );
-			if( $file=='.' || $file=='..' ) continue; // Ignore current and parent directory.
-			if( !$isFirst ) echo",";
-			echo '{ "id":"'.$file.'" }';
-			$isFirst = false;
-		}
-		echo "]";
+		echo json_encode( $images );
 	}
 
 	private function printVideoList(){
-		$paths = scandir( $this->videoPath );
+		$videos = $this->videoRepository->getVideos();
 		header( "Content-Type: application/json" );
-		echo "[";
-		$isFirst = true;
-		foreach( $paths AS $path ){
-			$file = basename( $path );
-			if( $file=='.' || $file=='..' ) continue; // Ignore current and parent directory.
-			if( !$isFirst ) echo",";
-			echo '{ "id":"'.$file.'" }';
-			$isFirst = false;
-		}
-		echo "]";
+		echo json_encode( $videos );
 	}
 
 	private function sendImage( $id ){
-		$file = $this->imagePath . $id;
-		if( file_exists($file) ){
-			$ext = $this->fileHelper->getExtension( $file );
-			$mime = $this->fileHelper->getMimeOfExtension( $ext );
-			header( "Content-Type: $mime" );
-			readfile( $file );
+		$image = $this->imageRepository->getImage( $id );
+		if( $image ){
+			header( "Content-Type: {$image->mime}" );
+			$oStream = fopen( "php://output" , "w" );
+			$writeTo = $image->writeTo; // Copy lambda out of object.
+			$writeTo( $oStream ); // call lambda
+			fclose( $oStream );
 		}else{
 			http_response_code( 404 );
-			echo "Image not found";
+			echo "Image Not Found";
 		}
 	}
 
 	private function sendVideo( $id ) {
-		$file = $this->videoPath . $id;
-		if( file_exists($file) ){
-			$ext = $this->fileHelper->getExtension( $file );
-			$mime = $this->fileHelper->getMimeOfExtension( $ext );
-			header( "Content-Type: $mime" );
-			readfile( $file );
+		$video = $this->videoRepository->getVideo( $id );
+		if( $video ){
+			header( "Content-Type: {$video->mime}" );
+			$oStream = fopen( "php://output" , "w" );
+			$writeTo = $video->writeTo; // Copy lambda out.
+			$writeTo( $oStream ); // call lambda
+			fclose( $oStream );
 		}else{
 			http_response_code( 404 );
-			echo "Video not found";
+			echo "Video Not Found";
 		}
 	}
 
