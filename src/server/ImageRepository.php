@@ -48,7 +48,7 @@ class ImageRepository {
 		$images = Array();
 		foreach( $paths AS $path ){
 			$id = $file = basename( $path );
-			if( $file=='.' || $file=='..' ) continue; // Ignore current and parent directory.
+			if( $file=='.' || $file=='..' || $path == '.DS_Store') continue; // Ignore current and parent directory.
 			$image = $this->createImage( $id );
 			//unset( $image->mime );
 			array_push( $images , $image );
@@ -93,4 +93,3 @@ class ImageRepository {
 	}
 
 }
-

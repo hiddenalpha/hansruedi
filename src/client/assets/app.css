@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #allContent {
-    max-width: 800px;
+    max-width: 50em;
     width: 100%;
     margin: 0 auto;
 }
@@ -31,14 +31,11 @@ h1, h2, h3, h4, h5, h6 {
 /* Image related styles */
 
 #imgContainer {
-    display: -ms-flexbox;
-    -ms-flex-direction: column;
     -ms-flex-wrap: wrap;
+    display: -ms-flexbox;
     display: flex;
-    flex-flow: column wrap;
-    max-height: 100vh;
+    flex-wrap: wrap;
     font-size: 0;
-    align-items: center;
 }
 
 #imgContainer .imgWrapper {
@@ -49,10 +46,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
-@media screen and (min-width: 800px) {
-    #imgContainer {
-        max-height: 800px;
-    }
+@media screen and (min-width: 50em) {
     #imgContainer .imgWrapper {
         width: 33.3%;
     }
