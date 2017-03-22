@@ -35,7 +35,7 @@ photobook.ui = (function () {
             if (Object.keys(imgInfo).length > 0) {
                 var makeModel = imgInfo.Make + " " + imgInfo.Model;
                 var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
-                var apertureValue = "F " + (imgInfo.ApertureValue.numerator / imgInfo.ApertureValue.denominator).toFixed(2);
+                var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
                 var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
 
                 //Append info to img
