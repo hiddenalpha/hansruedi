@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Bilder</title>
 
-		<meta charset="utf-8" />
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <title>Bilder</title>
 
-		<!-- Fonts from Google -->
-		<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<!-- Stylesheets -->
-		<link href="client/assets/app.css" rel="stylesheet">
+    <!-- Fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
 
-		<!-- jquery-3 - library -->
-		<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script> -->
-		<script type="text/javascript" src="client/assets/libs/jquery/jquery.min.js"></script>
+    <!-- Stylesheets -->
+    <link href="client/assets/app.css" rel="stylesheet">
 
-		<!-- module (must be first include) -->
-		<script type="text/javascript" src="client/app.module.js"></script>
+    <!-- jquery-3 - library -->
+    <script type="text/javascript" src="client/assets/libs/jquery/jquery.min.js"></script>
 
-		<!-- app components -->
-		<script type="text/javascript" src="client/test/test.js"></script>
-		<script type="text/javascript" src="client/services/imageService.js"></script>
+    <!-- EXIF img information - library -->
+    <script type="text/javascript" src="client/assets/libs/exif/exif.js"></script>
 
-		<!-- entry point (must be the last include) -->
-		<script type="text/javascript" src="client/app.main.js"></script>
+    <!-- module (must be first include) -->
+    <script type="text/javascript" src="client/app.module.js"></script>
 
-	</head>
+    <!-- app components -->
+    <script type="text/javascript" src="client/test/test.js"></script>
+    <script type="text/javascript" src="client/services/imageService.js"></script>
 
-	<body>
-		<div id="allContent">
-			
-			<noscript>
+    <!-- entry point (must be the last include) -->
+    <script type="text/javascript" src="client/app.main.js"></script>
+
+</head>
+
+<body>
+    <div id="allContent">
+
+        <noscript>
 				<p>Sorry. Diese App läuft ohne Javascript nicht :(</p>
 			</noscript>
 
-			<section>
-				<h1>Super Fancy Photo Page! =)</h1>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</section>
+        <section>
+            <h1>Super Fancy Photo Page! =)</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </section>
 
-			<section>
-				<div id="imgContainer"></div>
-			</section>
+        <section>
+            <div id="imgContainer"></div>
+        </section>
 
-		</div>
-	</body>
+    </div>
+</body>
+
 </html>

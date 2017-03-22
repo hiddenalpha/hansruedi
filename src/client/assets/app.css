@@ -16,7 +16,12 @@ section {
     padding: 0 10px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Slabo 27px', serif;
     font-weight: 300;
 }
@@ -36,6 +41,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-wrap: wrap;
     font-size: 0;
+    margin-bottom: 30px;
 }
 
 #imgContainer .imgWrapper {
@@ -44,6 +50,17 @@ h1, h2, h3, h4, h5, h6 {
 
 #imgContainer .imgWrapper img {
     width: 100%;
+}
+
+#imgContainer .imgWrapper .imgInfo {
+    font-size: 12px;
+    line-height: 20px;
+    color: #ffffff;
+    text-shadow: 2px 5px 5px #000;
+    position: relative;
+    bottom: 20px;
+    margin-left: 10px;
+    margin-bottom: -20px;
 }
 
 @media screen and (min-width: 50em) {
