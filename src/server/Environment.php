@@ -46,7 +46,7 @@ class Environment {
 			case 'restRequestHandler':
 				if( empty($instances['restRequestHandler']) ){
 					require_once( "server/RestRequestHandler.php" );
-					$instances['restRequestHandler'] = new RestRequestHandler( $this->fileHelper , $this->imageRepository , $this->videoRepository , $this->videoPath );
+					$instances['restRequestHandler'] = new RestRequestHandler( $this->imageRepository , $this->videoRepository );
 				}
 				return $instances['restRequestHandler'];
 

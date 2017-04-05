@@ -6,19 +6,15 @@ class RestRequestHandler {
 
 // memory /////////////////////////////////////////////////////////////////////
 
-	private $fileHelper;
 	private $imageRepository;
 	private $videoRepository;
-	private $videoPath;
 
 
 // instantiation //////////////////////////////////////////////////////////////
 
-	public function __construct( FileHelper $fileHelper , ImageRepository $imageRepository , VideoRepository $videoRepository , $videoPath ){
-		$this->fileHelper = $fileHelper;
+	public function __construct( ImageRepository $imageRepository , VideoRepository $videoRepository ){
 		$this->imageRepository = $imageRepository;
 		$this->videoRepository = $videoRepository;
-		$this->videoPath = $videoPath;
 	}
 
 
