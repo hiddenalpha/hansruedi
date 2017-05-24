@@ -11,6 +11,7 @@ photobook.await( 'VideoList',
 			that._ui = {
 				videoList: $( "[name='videoList']" , that._element )
 			};
+			// Initially load the list.
 			updateVideoList( that );
 		}
 
@@ -18,29 +19,37 @@ photobook.await( 'VideoList',
 		VideoList.prototype = Object.create( Object.prototype , {
 			'constructor': { value: VideoList },
 
-			'getHtmlElement': { value: function(){
+			'getElement': { value: function(){
 				return this._element;
 			}},
-
-			'setUrl': { value: function( url ){
-				this._element.url = url;
-			}}
 		});
 
 
 		function updateVideoList( that ){
+			var videoList = that._ui.videoList;
 			return restService({ url:"videos/" })
-				.then(function( videos ){
-					var videoList = that._ui.videoList;
-					while( videoList.firstChild ) videoList.removeChild(videoList.firstChild);
-					videos.forEach(function( video ){
-						var videoUrl = restService.createRestURL( "videos/"+video.id );
-						var link = $('<div class="video-link-box">');
-						link.append( '<p><b><a target="blank" href="'+ videoUrl +'">'+ video.id +'</a></b><br/> &nbsp; &nbsp;'+ video.description +'</p>' );
-						that._element.appendChild( link[0] );
-					});
-				})
+				.then( printVideos )
 			;
+			function printVideos( videos ){
+				videoList.empty(); // <- Clear old entries.
+				videos.forEach( printVideo ); // <- Create new entries.
+			}
+			function printVideo( video ){
+				var videoUrl = restService.createRestURL( "videos/"+video.id );
+				var box = $('<div class="video-link-box">');
+				if( video.thumb.available ){
+					var thumbPath = restService.createRestURL ("videos/"+ video.id +"/thumb" );
+					var img = $( '<img class="video-thumbnail" src="'+ thumbPath +'">' );
+					box.append( img );
+				}
+				var aTag = $( '<a target="blank" href="'+ videoUrl +'">'+ video.id +'</a>' );
+				var bold = $( '<b>' ).append( aTag );
+				box.append( bold );
+				if( video.description ){
+					box.append( $('<p>').text(video.description) );
+				}
+				videoList.append( box );
+			}
 		}
 
 		function createView( that ){
@@ -49,7 +58,7 @@ photobook.await( 'VideoList',
 				.append( '<h1>Videos</h1>' )
 				.append( '<div name="videoList"></>' );
 			;
-			return element[0];
+			return element;
 		}
 
 

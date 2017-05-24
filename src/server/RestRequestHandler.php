@@ -51,6 +51,11 @@ class RestRequestHandler {
 			$id = basename( $matches[0] );
 			$this->sendVideo( $id );
 		}
+		// Video thumbnails
+		else if( $method=='GET' && preg_match("/^\/videos\/([^\/]+)\/thumb$/",$path,$matches) ){
+			$videoId = $matches[1];
+			$this->sendVideoThumbnail( $videoId );
+		}
 		// Default
 		else{
 			http_response_code( 400 );
@@ -97,6 +102,21 @@ class RestRequestHandler {
 			http_response_code( 404 );
 			echo "Video Not Found";
 		}
+	}
+
+	private function sendVideoThumbnail( $videoId ){
+		$thumbnail = $this->videoRepository->getThumbnail( $videoId );
+		if( $thumbnail ){
+			header( "Content-Type: {$thumbnail->mime}" );
+			$oStream = fopen( "php://output" , "w" );
+			$writeTo = $thumbnail->writeTo; // Extract lambda
+			$writeTo( $oStream ); // call lambda
+			fclose( $oStream );
+		}else{
+			http_response_code( 404 );
+			echo "Video Not Found";
+		}
+
 	}
 
 }

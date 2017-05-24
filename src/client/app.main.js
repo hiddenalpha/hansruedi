@@ -9,7 +9,9 @@ photobook.await( 'allContent',
 	function(){
 		var resolve = this.resolve;
 		$(document).ready(function(){
-			resolve( $('#allContent')[0] );
+			var allContent = $('#allContent');
+			if( allContent.length > 1 ) console.warn( "'#allContent' is not unique!" );
+			resolve( allContent );
 		});
 	}
 );

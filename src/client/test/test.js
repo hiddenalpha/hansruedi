@@ -68,11 +68,11 @@ photobook.await(
 	[/*njct*/'VideoList','allContent'],
 	function( VideoList , allContent ){
 
-		// Create new videoList instance
+		// Create a new video list.
 		var videoList = new VideoList( $('<div>')[0] );
 
-		// Append the element of our list.
-		allContent.appendChild( videoList.getHtmlElement() );
+		// Append the element of our list to the DOM.
+		allContent.append( videoList.getElement() );
 	}
 );
 
