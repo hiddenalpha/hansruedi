@@ -1,5 +1,22 @@
 var photobook = photobook || {};
 
+
+// Commons ////////////////////////////////////////////////////////////////////
+
+// Provide our root element to the container.
+photobook.await( 'allContent',
+	[/*njct*/],
+	function(){
+		var resolve = this.resolve;
+		$(document).ready(function(){
+			resolve( $('#allContent')[0] );
+		});
+	}
+);
+
+
+///////////////////////////////////////////////////////////////////////////////
+
 ;
 (function () {
     'use strict';

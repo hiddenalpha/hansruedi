@@ -25,6 +25,8 @@
     <!-- app components -->
     <script type="text/javascript" src="client/test/test.js"></script>
     <script type="text/javascript" src="client/services/imageService.js"></script>
+    <script type="text/javascript" src="client/services/rest-service.js"></script>
+    <script type="text/javascript" src="client/video-list/video-list.js"></script>
 
     <!-- entry point (must be the last include) -->
     <script type="text/javascript" src="client/app.main.js"></script>
