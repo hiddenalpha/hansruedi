@@ -6,8 +6,14 @@ photobook.await( 'restService',
 
 		var restService = function( options ){
 			// Intercept call and apply base URL then delegate work.
-			options.url = baseUrl + options.url;
+			options.url = createRestURL(options.url);
 			return $.ajax( options );
+		};
+
+		restService.createRestURL = createRestURL;
+
+		function createRestURL( url ){
+			return baseUrl + url;
 		};
 
 		this.resolve( restService );

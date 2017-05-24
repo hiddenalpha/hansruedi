@@ -8,6 +8,9 @@ photobook.await( 'VideoList',
 			var that = this;
 			if( !that ) throw Error( "Use 'new'" );
 			that._element = createView( that );
+			that._ui = {
+				videoList: $( "[name='videoList']" , that._element )
+			};
 			updateVideoList( that );
 		}
 
@@ -26,11 +29,16 @@ photobook.await( 'VideoList',
 
 
 		function updateVideoList( that ){
-			return restService({
-					url: "videos/"
-				})
-				.then(function(){
-					console.log( "sdfasdfas" );
+			return restService({ url:"videos/" })
+				.then(function( videos ){
+					var videoList = that._ui.videoList;
+					while( videoList.firstChild ) videoList.removeChild(videoList.firstChild);
+					videos.forEach(function( video ){
+						var videoUrl = restService.createRestURL( "videos/"+video.id );
+						var link = $('<div>');
+						link.append( '<a target="blank" href="'+videoUrl+'">'+video.id+'</a>' );
+						that._element.appendChild( link[0] );
+					});
 				})
 			;
 		}
@@ -38,7 +46,8 @@ photobook.await( 'VideoList',
 		function createView( that ){
 			var element = $( '<div>' );
 			element	
-				.append( '<p>Hallo Welt</p>' )
+				.append( '<h1>Videos</h1>' )
+				.append( '<div name="videoList"></>' );
 			;
 			return element[0];
 		}
