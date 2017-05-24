@@ -87,3 +87,18 @@ h6 {
         vertical-align: top;
     }
 }
+
+
+/* VideoList *****************************************************************/
+
+.video-link-box {
+	float: left;
+	max-width: 20em;
+	background-color: #def;
+	border: 2px solid grey;
+	border-radius: 8px;
+	box-shadow: 0 0 2px 2px rgba(0,0,0,.3);
+	padding: 4px;
+	margin: 8px;
+}
+

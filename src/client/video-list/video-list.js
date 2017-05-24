@@ -35,8 +35,8 @@ photobook.await( 'VideoList',
 					while( videoList.firstChild ) videoList.removeChild(videoList.firstChild);
 					videos.forEach(function( video ){
 						var videoUrl = restService.createRestURL( "videos/"+video.id );
-						var link = $('<div>');
-						link.append( '<a target="blank" href="'+videoUrl+'">'+video.id+'</a>' );
+						var link = $('<div class="video-link-box">');
+						link.append( '<p><b><a target="blank" href="'+ videoUrl +'">'+ video.id +'</a></b><br/> &nbsp; &nbsp;'+ video.description +'</p>' );
 						that._element.appendChild( link[0] );
 					});
 				})

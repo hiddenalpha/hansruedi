@@ -37,17 +37,22 @@ class RestRequestHandler {
 		http_response_code( 200 );
 
 
+		// Images
 		if( $method=='GET' && preg_match("/^\/images\/?$/",$path) ){
 			$this->printImageList();
 		}else if( $method=='GET' && preg_match("/^\/images\/([^\/]+)\/?$/",$path,$matches) ){
 			$id = basename( $matches[0] );
 			$this->sendImage( $id );
-		}else if( $method=='GET' && preg_match("/^\/videos\/?$/",$path,$matches) ){
+		}
+		// Videos
+		else if( $method=='GET' && preg_match("/^\/videos\/?$/",$path,$matches) ){
 			$this->printVideoList();
 		}else if( $method=='GET' && preg_match("/^\/videos\/([^\/]+)\/?$/",$path,$matches) ){
 			$id = basename( $matches[0] );
 			$this->sendVideo( $id );
-		}else{
+		}
+		// Default
+		else{
 			http_response_code( 400 );
 			header( "Content-Type: text/plain" );
 			echo "Bad request.\n\nThe server didn't understand what you want.\n";

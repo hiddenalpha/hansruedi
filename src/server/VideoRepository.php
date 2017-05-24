@@ -34,6 +34,10 @@ class VideoRepository {
 		$id = "empty-03.mp4";
 		$this->videoMeta->$id = new stdClass();
 		$this->videoMeta->$id->description = "Nochmal so irgendein Video";
+
+		$id = "IMG_0894.mp4";
+		$this->videoMeta->$id = new stdClass();
+		$this->videoMeta->$id->description = "Trash us üsem Spielfilm";
 	}
 
 
