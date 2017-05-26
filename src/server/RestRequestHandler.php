@@ -94,9 +94,9 @@ class RestRequestHandler {
 		$video = $this->videoRepository->getVideo( $id );
 		if( $video ){
 			header( "Content-Type: {$video->mime}" );
+			$this->evaluateRange( $start , $end );
 			$oStream = fopen( "php://output" , "w" );
-			$writeTo = $video->writeTo; // Copy lambda out.
-			$writeTo( $oStream ); // call lambda
+			$video->writeTo( $oStream , $start , $end );
 			fclose( $oStream );
 		}else{
 			http_response_code( 404 );
@@ -109,14 +109,27 @@ class RestRequestHandler {
 		if( $thumbnail ){
 			header( "Content-Type: {$thumbnail->mime}" );
 			$oStream = fopen( "php://output" , "w" );
-			$writeTo = $thumbnail->writeTo; // Extract lambda
-			$writeTo( $oStream ); // call lambda
+			$thumbnail->writeTo( $oStream );
 			fclose( $oStream );
 		}else{
 			http_response_code( 404 );
 			echo "Video Not Found";
 		}
 
+	}
+
+	/**
+	 * Evaluates the range requested by HTTP range request.
+	 * @param start
+	 * 		The Reference where the start of the range will be written to.
+	 * @param end
+	 * 		The Reference where the end of the range will be written to.
+	 * 		Reserved value -1 means "until end of file"
+	 */
+	private function evaluateRange( &$start , &$end ){
+		error_log( "Range request not suported. mock values with '0' and '-1'. err_1495816136." );
+		$start = 0;
+		$end = -1;
 	}
 
 }

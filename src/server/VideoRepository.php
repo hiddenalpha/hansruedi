@@ -1,6 +1,9 @@
 <?php
 
 
+require_once( "server/WriteToHelper.php" );
+
+
 class VideoRepository {
 
 
@@ -23,45 +26,30 @@ class VideoRepository {
 // interaction ////////////////////////////////////////////////////////////////
 
 	public function getVideos(){
+		/** Destination to store the collected videos to. */
 		$videos = Array();
-		$thumbnails = Array();
+		/** List of files which can be videos. */
 		$files = scandir( $this->videoPath );
-		// Collect thumbnails
-		$thumbnailFiles = $files;
-		$files = Array();
-		foreach( $thumbnailFiles AS $id ){
+		foreach( $files AS $id ){
+			// Ensure that only flat paths are used.
 			$id = basename( $id );
 			if( $id=='.' || $id=='..' ){
 				// Ignore current and parent directory.
 			}else if( preg_match("/\.meta\.json$/i",$id) ){
-				// Ignore meta files
-			}else if( preg_match("/^(.*)\.thumb\.[^.]+$/",$id,$matches) ){
-				$thumbMeta = new stdClass();
-				$thumbMeta->id = $id;
-				$thumbMeta->pureName = $matches[1];
-				$thumbnails[ $thumbMeta->pureName ] = $thumbMeta;
+				// Ignore meta files.
+			}else if( preg_match("/\.thumb\.[^.]+$/",$id) ){
+				// Ignore thumbnail files.
 			}else{
-				// Not a thumbnail. Push to next array.
-				array_push( $files , $id );
+				// This is actually a video file. Use it.
+				array_push( $videos , $this->createVideo($id) );
 			}
-		}
-		// Create videos
-		foreach( $files AS $id ){
-			$id = basename( $id );
-			// Evaluate corresponding thumbnail
-			preg_match( "/^(.*)\.[^.]+$/" , $id , $matches );
-			$thumbId = isset($thumbnails[$matches[1]]) ? $thumbnails[$matches[1]]->id : null;
-			// Create video
-			$video = $this->createVideo( $id , $thumbId );
-			array_push( $videos , $video );
 		}
 		return $videos;
 	}
 
-	public function getVideo( $id , $attachWriter=false ){
-		$video = $this->createVideo( $id , null , true );
-		$file = $this->videoPath . $id;
-		if( file_exists($file) ){
+	public function getVideo( $id ){
+		$video = $this->createVideo( $id );
+		if( file_exists($this->videoPath.$id) ){
 			return $video;
 		}else{
 			return null;
@@ -72,74 +60,88 @@ class VideoRepository {
 		$thumbFileName = $this->getThumbFileNameByVideoId( $videoId );
 		$thumbPath = $this->videoPath . $thumbFileName;
 		if( file_exists($thumbPath) ){
-			$thumbnail = new stdClass();
-			$thumbnail->mime = "image/jpeg";
-			$thumbnail->writeTo = function( $oStream )use($thumbPath){
+			$thumbnail = new WriteToHelper(function( $oStream , $start , $end )use($thumbPath){
 				$fd = fopen( $thumbPath , "r" );
 				stream_copy_to_stream( $fd , $oStream );
 				fclose( $fd );
-			};
+			});
+			$thumbnail->mime = "image/jpeg"; // <- Currently only jpeg supported.
 			return $thumbnail;
 		}else{
 			return null;
 		}
 	}
 
-	private function createVideo( $id , $thumbId , $attachWriter=false ){
+	/**
+	 * Creates a object containing the information representing a video.
+	 * @param id
+	 * 		The id of the video to create
+	 */
+	private function createVideo( $id ){
 		$file = $this->videoPath . $id;
 		if( file_exists($file) ){
 			$fileExtension = $this->fileHelper->getExtension( $file );
-			// Basic
-			$video = new stdClass();
+			$video = new WriteToHelper(function( $oStream , $start , $end )use($file){
+				if( $start!=0 || $end!=-1 ) throw new Exception( "Range streaming not implemented yet. err_1495815889" );
+				$fd = fopen( $file , "r" );
+				stream_copy_to_stream( $fd , $oStream );
+				fclose( $fd );
+			});
 			$video->id = $id;
 			$video->mime = $this->fileHelper->getMimeOfExtension( $fileExtension );
+			$video->size = filesize($file);
 			$video->description = $this->getVideoMeta( $id )->description;
 			// Thumbnail
 			$thumbId = $this->getThumbFileNameByVideoId( $video->id );
 			$video->thumb = new stdClass();
 			$video->thumb->available = file_exists("{$this->videoPath}$thumbId");
-			// writer
-			if( $attachWriter ){
-				$video->writeTo = function( $oStream )use($file){
-					$fd = fopen( $file , "r" );
-					stream_copy_to_stream( $fd , $oStream );
-					fclose( $fd );
-				};
-			}
 			return $video;
 		}else{
 			return null;
 		}
 	}
 
-	private function getMetaByVideoId( $id ){
-		$fileName = $this->getMetaFileNameByVideoId( $id );
-		$filePath = $this->videoPath . $fileName;
-		if( file_exists($filePath) ){
-			return json_decode( file_get_contents($filePath) );
-		}else{
-			return null;
-		}
-	}
-
+	/**
+	 * @return
+	 * 		the filename of the meta file corresponding to the specified video id.
+	 */
 	private function getMetaFileNameByVideoId( $id ){
 		return $this->getPureFileNameByVideoId( $id ) .".meta.json";
 	}
 
+	/**
+	 * @return
+	 * 		The filename of the thumb corresponding to the specified video id.
+	 */
 	private function getThumbFileNameByVideoId( $id ){
 		return $this->getPureFileNameByVideoId($id) . ".thumb.jpg";
 	}
 
-	/** @return The filename without the extension. */
+	/**
+	 * @return
+	 * 		The filename without the extension.
+	 */
 	private function getPureFileNameByVideoId( $id ){
 		preg_match( "/^(.*)\.[^.]+$/" , $id , $matches );
 		return $matches[1];
 	}
 
+	/**
+	 * Loads and caches the video meta data.
+	 * @return
+	 * 		The video meta to the provided video id or null if there is no meta
+	 * 		available for this id.
+	 */
 	private function getVideoMeta( $id ){
 		if( !isset($this->videoMeta->$id) ){
-			// Initialize metadata
-			$this->videoMeta->$id = $this->getMetaByVideoId( $id );
+			// Initialize metadata from file.
+			$fileName = $this->getMetaFileNameByVideoId( $id );
+			$filePath = $this->videoPath . $fileName;
+			if( file_exists($filePath) ){
+				$this->videoMeta->$id = json_decode( file_get_contents($filePath) );
+			}else{
+				$this->videoMeta->$id = null;
+			}
 		}
 		return $this->videoMeta->$id;
 	}
