@@ -1,6 +1,6 @@
 photobook.await( 'VideoList',
-	[/*njct*/'restService','videoService','defaultVideoPlayer'],
-	function( restService , videoService , defaultVideoPlayer ){
+	[/*njct*/'restService','videoService','videoPlayer'],
+	function( restService , videoService , videoPlayer ){
 		'use strict';
 
 
@@ -59,8 +59,8 @@ photobook.await( 'VideoList',
 		 * Handles event when video link is clicked.
 		 */
 		function onVideoLinkClick( video ){
-			defaultVideoPlayer.setVideo( video );
-			defaultVideoPlayer.setVisible( true );
+			videoPlayer.setVideo( video );
+			videoPlayer.setVisible( true );
 		}
 
 		function createView( that ){
