@@ -1,6 +1,6 @@
 photobook.await( 'VideoList',
-	[/*njct*/'restService'],
-	function( restService ){
+	[/*njct*/'restService','videoService','defaultVideoPlayer'],
+	function( restService , videoService , defaultVideoPlayer ){
 		'use strict';
 
 
@@ -27,7 +27,7 @@ photobook.await( 'VideoList',
 
 		function updateVideoList( that ){
 			var videoList = that._ui.videoList;
-			return restService({ url:"videos/" })
+			return videoService.getVideos()
 				.then( printVideos )
 			;
 			function printVideos( videos ){
@@ -35,14 +35,17 @@ photobook.await( 'VideoList',
 				videos.forEach( printVideo ); // <- Create new entries.
 			}
 			function printVideo( video ){
-				var videoUrl = restService.createRestURL( "videos/"+video.id );
+				var that = this;
+				var videoUrl = video.url;
 				var box = $('<div class="video-link-box">');
 				if( video.thumb.available ){
 					var thumbPath = restService.createRestURL ("videos/"+ video.id +"/thumb" );
 					var img = $( '<img class="video-thumbnail" src="'+ thumbPath +'">' );
 					box.append( img );
 				}
-				var aTag = $( '<a target="blank" href="'+ videoUrl +'">'+ video.id +'</a>' );
+				//var aTag = $( '<a target="blank" href="'+ videoUrl +'">'+ video.id +'</a>' );
+				var aTag = $( '<a href="javascript:void(0)">'+ video.id +'</a>' );
+				aTag.on( 'click' , onVideoLinkClick.bind(that,video) );
 				var bold = $( '<b>' ).append( aTag );
 				box.append( bold );
 				if( video.description ){
@@ -52,13 +55,21 @@ photobook.await( 'VideoList',
 			}
 		}
 
+		/**
+		 * Handles event when video link is clicked.
+		 */
+		function onVideoLinkClick( video ){
+			defaultVideoPlayer.setVideo( video );
+			defaultVideoPlayer.setVisible( true );
+		}
+
 		function createView( that ){
 			var element = $( '<div>' );
 			element	
 				.append( '<h1>Videos</h1>' )
 				.append( '<div name="videoList"></>' );
 			;
-			return element;
+			return element[0];
 		}
 
 
