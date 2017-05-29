@@ -1,6 +1,6 @@
 photobook.await( 'VideoListType',
-	[/*njct*/'restService','videoService','videoPlayer'],
-	function( restService , videoService , videoPlayer ){
+	[/*njct*/'restService','videoService'],
+	function( restService , videoService ){
 		'use strict';
 
 
@@ -11,6 +11,7 @@ photobook.await( 'VideoListType',
 			var that = this;
 			if( !that ) throw Error( "Use 'new'" );
 			that._element = createView( that );
+			that._onVideoActionListeners = [];
 			that._ui = {
 				videoList: $( "[name='videoList']" , that._element )
 			};
@@ -25,6 +26,10 @@ photobook.await( 'VideoListType',
 			'getElement': { value: function(){
 				return this._element;
 			}},
+			'onVideoAction': { value: function( callback ){
+				if( typeof(callback) !== 'function' ) throw Error( "Arg 'callback' must be a function." );
+				this._onVideoActionListeners.push({ callback:callback });
+			}}
 		});
 
 
@@ -38,7 +43,6 @@ photobook.await( 'VideoListType',
 				videos.forEach( printVideo ); // <- Create new entries.
 			}
 			function printVideo( video ){
-				var that = this;
 				var videoUrl = video.url;
 				var box = $('<div class="video-link-box">');
 				if( video.thumb.available ){
@@ -62,8 +66,13 @@ photobook.await( 'VideoListType',
 		 * Handles event when video link is clicked.
 		 */
 		function onVideoLinkClick( video ){
-			videoPlayer.setVideo( video );
-			videoPlayer.setVisible( true );
+			this._onVideoActionListeners.forEach(function( listener ){
+				try{
+					listener.callback.call( listener.callback , video );
+				}catch( e ){
+					console.error( e );
+				}
+			});
 		}
 
 		function createView( that ){
