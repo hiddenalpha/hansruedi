@@ -27,6 +27,7 @@
     <script type="text/javascript" src="client/services/rest-service.js"></script>
     <script type="text/javascript" src="client/services/video-service.js"></script>
     <script type="text/javascript" src="client/test/test.js"></script>
+    <script type="text/javascript" src="client/video-list/video-list-type.js"></script>
     <script type="text/javascript" src="client/video-list/video-list.js"></script>
     <script type="text/javascript" src="client/video-player/video-player-type.js"></script>
     <script type="text/javascript" src="client/video-player/video-player.js"></script>

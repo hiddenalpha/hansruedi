@@ -2,7 +2,10 @@ photobook.await( 'videoService',
 	/*njct*/['restService'],
 	function( restService ){
 
-
+		/*
+		 * Provides an API to work with videos. For example to get the list of videos from the
+		 * server or for helper functions.
+		 */
 		var videoService = {
 
 

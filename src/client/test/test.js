@@ -58,23 +58,4 @@
 	);
 
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Debugging by ändu //////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-
-photobook.await(
-	[/*njct*/'VideoList','allContent'],
-	function( VideoList , allContent ){
-
-		// Create a new video list.
-		var videoList = new VideoList( $('<div>')[0] );
-
-		// Append the element of our list to the DOM.
-		allContent.append( videoList.getElement() );
-	}
-);
-
-
 }());
