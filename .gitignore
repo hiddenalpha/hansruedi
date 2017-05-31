@@ -1,0 +1,5 @@
+
+" ignore data directories.
+src/images/*
+src/videos/*
+
