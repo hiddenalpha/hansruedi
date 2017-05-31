@@ -54,6 +54,11 @@
         </section>
 
     </div>
+
+	<footer>
+		<p>Lorem ipsum</p>
+	</footer>
+
 </body>
 
 </html>

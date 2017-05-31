@@ -11,6 +11,15 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+footer {
+    color: #eee;
+    background-color: #666;
+    text-align: center;
+    padding: 2em;
+    margin: 3em 0 0;
+    min-height: 20em;
+}
+
 section {
     margin: 15px 0;
     padding: 0 10px;
@@ -98,6 +107,7 @@ h6 {
 .video-link-box {
 	float: left;
 	max-width: 20em;
+    width: 100%;
 	background-color: #def;
 	border: 2px solid grey;
 	border-radius: 8px;
