@@ -81,15 +81,16 @@ class VideoRepository {
 		$file = $this->videoPath . $id;
 		if( file_exists($file) ){
 			$fileExtension = $this->fileHelper->getExtension( $file );
-			$video = new WriteToHelper(function( $oStream , $start , $end )use($file){
-				if( $start!=0 || $end!=-1 ) throw new Exception( "Range streaming not implemented yet. err_1495815889" );
+			$size = filesize($file);
+			$video = new WriteToHelper(function( $oStream , $start , $end )use($file,$size){
+				if( $end==-1 ) $end = $size;
 				$fd = fopen( $file , "r" );
-				stream_copy_to_stream( $fd , $oStream );
+				stream_copy_to_stream( $fd , $oStream , $end-$start , $start );
 				fclose( $fd );
 			});
 			$video->id = $id;
 			$video->mime = $this->fileHelper->getMimeOfExtension( $fileExtension );
-			$video->size = filesize($file);
+			$video->size = $size;
 			$video->description = $this->getVideoMeta( $id )->description;
 			// Thumbnail
 			$thumbId = $this->getThumbFileNameByVideoId( $video->id );

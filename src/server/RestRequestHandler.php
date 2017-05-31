@@ -93,8 +93,22 @@ class RestRequestHandler {
 	private function sendVideo( $id ) {
 		$video = $this->videoRepository->getVideo( $id );
 		if( $video ){
-			header( "Content-Type: {$video->mime}" );
+			// Get requested range.
 			$this->evaluateRange( $start , $end );
+			// Apply fallback if necessary.
+			if( $end > $video->size || $end==-1 ) $end = $video->size;
+
+			// Set common headers.
+			header( "Content-Type: {$video->mime}" );
+			header( "Accept-Ranges: bytes" );
+			header( "Content-Length: ". ($end-$start) );
+			if( $start != 0 || $end != $video->size ){
+				// Set range-request specific headers.
+				http_response_code( 206 );
+				header( "Content-Range: bytes $start-". ($end-1) ."/{$video->size}" );
+			}
+
+			// Stream the requested content.
 			$oStream = fopen( "php://output" , "w" );
 			$video->writeTo( $oStream , $start , $end );
 			fclose( $oStream );
@@ -127,9 +141,31 @@ class RestRequestHandler {
 	 * 		Reserved value -1 means "until end of file"
 	 */
 	private function evaluateRange( &$start , &$end ){
-		error_log( "Range request not suported. mock values with '0' and '-1'. err_1495816136." );
+		// Set default values.
 		$start = 0;
 		$end = -1;
+
+		// Evaluate effective values.
+		$headers = getallheaders();
+		$rangeHeader = isset($headers['Range']) ? $headers['Range'] : null;
+		// If this is a range request.
+		if( $rangeHeader ){
+			// Try to evaluate range.
+			$range = explode( '=' , $rangeHeader );
+			if( count($range) != 2 || $range[0]!="bytes" ){
+				error_log( "Failed to parse range header. err_1496161433 Range: '$rangeHeader'" );
+				return;
+			}
+			$range = $range[1]; // <- take part with numbers (eg: '0-5' )
+			$range = explode( '-' , $range );
+			if( count($range) != 2 ){
+				error_log( "Failed to parse range header. err_1496161440. Range: '$rangeHeader'" );
+				return;
+			}
+			$start = $range[0];
+			$end = $range[1]=="" ? -1 : $range[1];
+			//error_log( "DEBUG: range is from '$start' to '$end'." );
+		}
 	}
 
 }
