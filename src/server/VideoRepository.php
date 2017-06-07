@@ -91,7 +91,8 @@ class VideoRepository {
 			$video->id = $id;
 			$video->mime = $this->fileHelper->getMimeOfExtension( $fileExtension );
 			$video->size = $size;
-			$video->description = $this->getVideoMeta( $id )->description;
+			$meta = $this->getVideoMeta( $id );
+			$video->description = $meta ? $meta->description : null;
 			// Thumbnail
 			$thumbId = $this->getThumbFileNameByVideoId( $video->id );
 			$video->thumb = new stdClass();
