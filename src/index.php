@@ -29,8 +29,6 @@
     <script type="text/javascript" src="client/test/test.js"></script>
     <script type="text/javascript" src="client/video-list/video-list-type.js"></script>
     <script type="text/javascript" src="client/video-list/video-list.js"></script>
-    <script type="text/javascript" src="client/video-player/video-player-type.js"></script>
-    <script type="text/javascript" src="client/video-player/video-player.js"></script>
 
     <!-- entry point (must be the last include) -->
     <script type="text/javascript" src="client/app.main.js"></script>
@@ -45,7 +43,7 @@
 			</noscript>
 
         <section>
-            <h1>Super Fancy Photo Page! =)</h1>
+            <h1>Gruppe Hansruedi 152</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
         </section>
 
