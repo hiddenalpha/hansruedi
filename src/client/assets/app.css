@@ -4,6 +4,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 body {
@@ -12,8 +13,7 @@ body {
 }
 
 footer {
-    color: #eee;
-    background-color: #666;
+    background-color: #00fdc8;
     text-align: center;
     padding: 2em;
     margin: 3em 0 0;
@@ -58,8 +58,7 @@ h6 {
 }
 
 #imgContainer .imgWrapper img {
-    max-width: 300px;
-    max-height: 300px;
+    width: 100%;
 }
 
 #imgContainer .imgWrapper .imgInfo {
@@ -106,15 +105,17 @@ h6 {
 /* VideoList *****************************************************************/
 
 .video-box {
-    background-color: #def;
-    border: 2px solid grey;
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, .3);
-    padding: 4px;
-    margin: 8px;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
 }
 
 .video-box>video {
     max-width: 100%;
+}
+
+.video-box>.infoWrapper {
+    padding: 5px;
 }
 
 

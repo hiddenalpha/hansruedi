@@ -58,30 +58,15 @@ photobook.await('VideoListType', [ /*njct*/ 'restService', 'videoService'],
                     var player = $('<video controls poster="' + videoPath + '/thumb" src="' + videoPath + '">');
                     box.append(player);
                 }
-                //var aTag = $( '<a target="blank" href="'+ videoUrl +'">'+ video.id +'</a>' );
-                var aTag = $('<p>' + video.id + '</p>');
-                aTag.on('click', onVideoLinkClick.bind(that, video));
-                var bold = $('<b>').append(aTag);
-                box.append(bold);
-                if (video.description) {
-                    box.append($('<p>').text(video.description));
-                }
+                var infoWrapper = $('<div class="infoWrapper">');
+
+                var videoId = $('<p><b>' + video.id + '</b></p>');
+                infoWrapper.append(videoId).append($('<p>').text(video.description));
+                box.append(infoWrapper);
+
                 videoList.append(box);
 
             }
-        }
-
-        /**
-         * Handles event when video link is clicked.
-         */
-        function onVideoLinkClick(video) {
-            this._onVideoActionListeners.forEach(function (listener) {
-                try {
-                    listener.callback.call(listener.callback, video);
-                } catch (e) {
-                    console.error(e);
-                }
-            });
         }
 
         function createView(that) {
