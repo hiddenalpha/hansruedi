@@ -72,6 +72,13 @@ h6 {
     margin-bottom: -20px;
 }
 
+#imgContainer .imgWrapper .imageComment {
+    padding: 2px 5px;
+    font-size: 15px;
+    height: 25px;
+    border: 1px solid #ccc;
+}
+
 @media screen and (min-width: 30em) {
     #imgContainer .imgWrapper {
         width: 50%;
