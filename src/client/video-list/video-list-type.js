@@ -55,7 +55,8 @@ photobook.await('VideoListType', [ /*njct*/ 'restService', 'videoService'],
                 var box = $('<div class="video-box">');
                 if (video.thumb.available) {
                     var videoPath = restService.createRestURL("videos/" + video.id);
-                    var player = $('<video controls poster="' + videoPath + '/thumb" src="' + videoPath + '">');
+                    var player = $('<video controls poster="' + videoPath + '/thumb">');
+                    player.append('<source src="' + videoPath + '" type="video/mp4">')
                     box.append(player);
                 }
                 var infoWrapper = $('<div class="infoWrapper">');
