@@ -16,28 +16,7 @@ class ImageRepository {
 	public function __construct( FileHelper $fileHelper , $imagePath ){
 		$this->fileHelper = $fileHelper;
 		$this->imagePath = $imagePath;
-		$this->initImageMeta();
-	}
-
-	private function initImageMeta(){
-		if( $this->imageMeta ) throw new Exception( "Image meta is already initialized." );
-
 		$this->imageMeta = new stdClass();
-
-		$id = "01.jpeg";
-		$this->imageMeta->$id = new stdClass();
-		$this->imageMeta->$id->id = $id;
-		$this->imageMeta->$id->description = "Ein Bild";
-
-		$id = "02.jpeg";
-		$this->imageMeta->$id = new stdClass();
-		$this->imageMeta->$id->id = $id;
-		$this->imageMeta->$id->description = "Ein anderes Bild";
-
-		$id = "03.jpeg";
-		$this->imageMeta->$id = new stdClass();
-		$this->imageMeta->$id->id = $id;
-		$this->imageMeta->$id->description = "Noch ein Bild";
 	}
 
 
@@ -48,10 +27,16 @@ class ImageRepository {
 		$images = Array();
 		foreach( $paths AS $path ){
 			$id = $file = basename( $path );
-			if( $file=='.' || $file=='..' || $path == '.DS_Store') continue; // Ignore current and parent directory.
-			$image = $this->createImage( $id );
-			//unset( $image->mime );
-			array_push( $images , $image );
+			if( $file=='.' || $file=='..' || $path == '.DS_Store'){
+				// Ignore current and parent directory.
+			}else if( preg_match("/\.meta\.json$/i",$id) ){
+				// Ignore meta files.
+			}else if( preg_match("/\.thumb\.[^.]+$/",$id) ){
+				// Ignore thumbnail files.
+			}else{
+				$image = $this->createImage( $id );
+				array_push( $images , $image );
+			}
 		}
 		return $images;
 	}
@@ -60,36 +45,60 @@ class ImageRepository {
 		return $this->createImage( $id , true );
 	}
 
-	private function createImage( $id , $attachWriter=false ){
+	private function createImage( $id ){
 		$file = $this->imagePath . $id;
 		if( file_exists($file) ){
 			$meta = $this->getImageMeta( $id );
 			$image = new stdClass();
 			$image->id = $id;
-			$image->mime = $meta->mime;
-			$image->description = $meta->description;
-			if( $attachWriter ){
-				$image->writeTo = function( $oStream )use( $file ){
-					$fd = fopen( $file , "r" );
-					stream_copy_to_stream( $fd , $oStream );
-					fclose( $fd );
-				};
-			}
+			$fileExtension = $this->fileHelper->getExtension( $file );
+			$image->mime = $this->fileHelper->getMimeOfExtension( $fileExtension );
+			$image->description = $meta ? $meta->description : null;
+			$image->writeTo = function( $oStream )use( $file ){
+				$fd = fopen( $file , "r" );
+				stream_copy_to_stream( $fd , $oStream );
+				fclose( $fd );
+			};
 			return $image;
 		}else{
 			return null;
 		}
 	}
 
+	/**
+	 * @return
+	 * 		the filename of the meta file corresponding to the specified video id.
+	 */
+	private function getMetaFileNameByImageId( $id ){
+		return $this->getPureFileNameByImageId( $id ) .".meta.json";
+	}
+
+	/**
+	 * @return
+	 * 		The filename without the extension.
+	 */
+	private function getPureFileNameByImageId( $id ){
+		preg_match( "/^(.*)\.[^.]+$/" , $id , $matches );
+		return $matches[1];
+	}
+
+	/**
+	 * @return
+	 * 		The image meta to the provided image id or null if there is no meta
+	 * 		available for this id.
+	 */
 	private function getImageMeta( $id ){
 		if( !isset($this->imageMeta->$id) ){
-			// No meta yet. Create a dynamic one
-			$this->imageMeta->$id = new stdClass();
+			// Initialize metadata from file.
+			$fileName = $this->getMetaFileNameByImageId( $id );
+			$filePath = $this->imagePath . $fileName;
+			if( file_exists($filePath) ){
+				$this->imageMeta->$id = json_decode( file_get_contents($filePath) );
+			}else{
+				$this->imageMeta->$id = null;
+			}
 		}
-		$meta = $this->imageMeta->$id; // Shorthand name for simple access.
-		if( empty($meta->description) ) $meta->description = "";
-		$meta->mime = $this->fileHelper->getMimeOfExtension( $this->fileHelper->getExtension($id) ); // Using id becuase it equals to filename.
-		return $meta;
+		return $this->imageMeta->$id;
 	}
 
 }
