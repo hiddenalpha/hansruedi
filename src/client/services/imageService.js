@@ -7,8 +7,8 @@ photobook.imageService = (function () {
     function _appendImagesToDom(images) {
         var baseElem = '';
 
-        images.forEach(function (image) { //TODO: change description placeholder (id) to actual description
-            var singleElem = '<div class="imgWrapper"><img src="' + _imgBaseUrl + image.id + '"><div class="imageComment"><p>' + image.id + '</p></div></div>';
+        images.forEach(function (image) {
+            var singleElem = '<div class="imgWrapper"><img src="' + _imgBaseUrl + image.id + '"><div class="imageComment"><p>' + image.description + '</p></div></div>';
             baseElem += singleElem;
         });
 
