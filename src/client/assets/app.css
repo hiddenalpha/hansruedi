@@ -49,16 +49,20 @@ h6 {
     display: -ms-flexbox;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     font-size: 0;
     margin-bottom: 30px;
 }
 
 #imgContainer .imgWrapper {
     width: 100%;
+    background-color: #ccc;
+    margin: 4px;
+    box-shadow: 0 0 2px 2px rgba(0,0,0,0.3);
 }
 
 #imgContainer .imgWrapper img {
-    width: 100%;
+    max-width: 100%;
 }
 
 #imgContainer .imgWrapper .imgInfo {
@@ -116,11 +120,11 @@ h6 {
     margin-bottom: 15px;
 }
 
-.video-box>video {
+.video-box > video {
     max-width: 100%;
 }
 
-.video-box>.infoWrapper {
+.video-box > .infoWrapper {
     padding: 5px;
 }
 
