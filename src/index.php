@@ -23,6 +23,7 @@
     <script type="text/javascript" src="client/app.module.js"></script>
 
     <!-- app components -->
+    <script type="text/javascript" src="client/large-image/large-image.js"></script>
     <script type="text/javascript" src="client/services/imageService.js"></script>
     <script type="text/javascript" src="client/services/rest-service.js"></script>
     <script type="text/javascript" src="client/services/video-service.js"></script>
@@ -50,6 +51,8 @@
         <section>
             <div id="imgContainer"></div>
         </section>
+
+        <div id="largeImagePlaceholder" style="display:none;">DevHint: This element gets replaced later by js.</div>
 
     </div>
 

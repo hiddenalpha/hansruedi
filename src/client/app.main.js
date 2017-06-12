@@ -1,4 +1,4 @@
-var photobook = photobook || {};
+'use strict';
 
 
 // Common /////////////////////////////////////////////////////////////////////
@@ -6,9 +6,8 @@ var photobook = photobook || {};
 
 // Provide our root element to the container.
 photobook.await('allContent',
-    /*njct*/
-    [],
-    function () {
+    /*njct*/[],
+    function(){
         var resolve = this.resolve;
         $(document).ready(function () {
             var allContent = $('#allContent');
@@ -22,51 +21,65 @@ photobook.await('allContent',
 ///////////////////////////////////////////////////////////////////////////////
 
 
-;
-(function () {
-    'use strict';
+photobook.await( 'main',
+    /*njct*/['allContent','imageUi','imageService','largeImage'],
+    function( allContent , imageUi , imageService , largeImage ){
 
-    // Startup the application and attach event handlers
-    $(document).ready(function () {
         //Get and display all images
-        photobook.imageService.getImages();
+        imageService.getImages(function( images ){
+
+            images.forEach(function( image ){
+                var imageUrl = imageService.getImageUrlById( image.id );
+                var singleElem = $( '<div class="imgWrapper"><img src="' + imageUrl + '"><div class="imageComment"><p>' + image.description + '</p></div></div>' );
+                singleElem = $( singleElem );
+                singleElem.find( 'img' )
+                    .on( 'click' , function(){
+                        largeImage.showImage({ src:imageUrl });
+                    })
+                ;
+                console.log( "singleElem", singleElem );
+                allContent.find("#imgContainer").append( singleElem );
+            });
+        });
 
         //Show EXIF info on img
-        $("#imgContainer").on("mouseover", "img", function () {
-            photobook.ui.showImgInfo($(this)[0]);
+        allContent.find("#imgContainer").on("mouseover", "img", function () {
+            imageUi.showImgInfo($(this)[0]);
         });
 
         //Remove img info
-        $("#imgContainer").on("mouseout", "img", function () {
+        allContent.find("#imgContainer").on("mouseout", "img", function () {
             $(this).siblings(".imgInfo").remove();
         });
-    });
 
-}());
+        this.resolve( "thisIsTheApplicationEntryPointAndThereForeHasNoApi" );
+    }
+);
 
+photobook.await( 'imageUi',
+    /*njct*/[],
+    function(){
 
-photobook.ui = (function () {
-    'use strict';
+        function showImgInfo($this) {
+            EXIF.getData($this, function () {
+                //Get all info from img
+                var imgInfo = EXIF.getAllTags($this);
 
-    function showImgInfo($this) {
-        EXIF.getData($this, function () {
-            //Get all info from img
-            var imgInfo = EXIF.getAllTags($this);
+                //Make sure info is available then prepare info
+                if (Object.keys(imgInfo).length > 0) {
+                    var makeModel = imgInfo.Make + " " + imgInfo.Model;
+                    var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
+                    var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
+                    var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
 
-            //Make sure info is available then prepare info
-            if (Object.keys(imgInfo).length > 0) {
-                var makeModel = imgInfo.Make + " " + imgInfo.Model;
-                var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
-                var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
-                var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
+                    //Append info to img
+                    $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
+                }
+            });
+        }
 
-                //Append info to img
-                $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
-            }
+        this.resolve({
+            showImgInfo: showImgInfo
         });
     }
-
-    return {
-        showImgInfo: showImgInfo
-    }
-})();
+);

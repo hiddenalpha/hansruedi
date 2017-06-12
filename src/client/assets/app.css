@@ -129,7 +129,30 @@ h6 {
 }
 
 
-/*****************************************************************************/
+/* largeImage ****************************************************************/
+
+.largeImage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.largeImage .overlay {
+    background-color: rgba( 0 , 0 , 0 , 0.8 );
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.largeImage img {
+    max-width: 100%;
+    max-height: 100vw;
+}
 
 
 /*****************************************************************************/
