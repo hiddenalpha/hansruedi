@@ -57,7 +57,8 @@
     </div>
 
 	<footer>
-		<p>Lorem ipsum</p>
+		<p>Made with love and not too much boredom</p>
+        <p>Andreas Fankhauser, Natthakit Khamso &amp; Sandro Colombo</p>
 	</footer>
 
 </body>

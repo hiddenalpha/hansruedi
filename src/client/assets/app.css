@@ -17,7 +17,6 @@ footer {
     text-align: center;
     padding: 2em;
     margin: 3em 0 0;
-    min-height: 20em;
 }
 
 section {
@@ -151,15 +150,9 @@ h6 {
 }
 
 .largeImage img {
-    max-width: 100vw;
-    max-height: 100vh;
-}
-
-@media screen and (min-width: 50em) {
-    .largeImage img {
-        max-width: 95vw;
-        max-height: 95vh;
-    }
+    max-width: 95vw;
+    max-height: 95vh;
+    margin-top: 2.5vh;
 }
 
 
