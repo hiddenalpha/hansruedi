@@ -37,7 +37,6 @@ photobook.await( 'main',
                         largeImage.showImage({ src:imageUrl });
                     })
                 ;
-                console.log( "singleElem", singleElem );
                 allContent.find("#imgContainer").append( singleElem );
             });
         });
