@@ -65,26 +65,22 @@ photobook.await('imageUi',
 
         function showImgInfo($this) {
 
-            if (!$($this).hasClass("hasInit")) {
+            EXIF.getData($this, function () {
+                //Get all info from img
+                var imgInfo = EXIF.getAllTags($this);
 
-                $($this).addClass("hasInit");
+                //Make sure info is available then prepare info
+                if (Object.keys(imgInfo).length > 0) {
+                    var makeModel = imgInfo.Make + " " + imgInfo.Model;
+                    var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
+                    var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
+                    var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
 
-                EXIF.getData($this, function () {
-                    //Get all info from img
-                    var imgInfo = EXIF.getAllTags($this);
+                    //Append info to img
+                    $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
+                }
+            });
 
-                    //Make sure info is available then prepare info
-                    if (Object.keys(imgInfo).length > 0) {
-                        var makeModel = imgInfo.Make + " " + imgInfo.Model;
-                        var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
-                        var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
-                        var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
-
-                        //Append info to img
-                        $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
-                    }
-                });
-            }
         }
 
         this.resolve({

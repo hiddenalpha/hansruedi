@@ -15,7 +15,7 @@ body {
 footer {
     background-color: #00fdc8;
     text-align: center;
-    padding: 2em;
+    padding: 2em 1em;
     margin: 3em 0 0;
 }
 
@@ -30,8 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Slabo 27px', serif;
-    font-weight: 300;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 #allContent {
