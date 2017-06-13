@@ -31,6 +31,9 @@ h4,
 h5,
 h6 {
     font-family: 'Source Sans Pro', sans-serif;
+    font-size: 36px;
+    margin: 35px 0;
+    text-align: center;
 }
 
 #allContent {
@@ -56,6 +59,7 @@ h6 {
     width: 100%;
     background-color: #ccc;
     margin: 4px 0;
+    overflow: hidden;
 }
 
 #imgContainer .imgWrapper img {
