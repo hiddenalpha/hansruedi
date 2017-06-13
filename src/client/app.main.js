@@ -71,13 +71,19 @@ photobook.await('imageUi',
 
                 //Make sure info is available then prepare info
                 if (Object.keys(imgInfo).length > 0) {
-                    var makeModel = imgInfo.Make + " " + imgInfo.Model;
-                    var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
-                    var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
-                    var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
 
-                    //Append info to img
-                    $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
+                    if (imgInfo.ISOSpeedRatings) {
+
+                        var makeModel = imgInfo.Make + " " + imgInfo.Model;
+                        var isoValue = "ISO " + imgInfo.ISOSpeedRatings;
+                        var apertureValue = "F " + (imgInfo.FNumber.numerator / imgInfo.FNumber.denominator).toFixed(2);
+                        var exposureTime = imgInfo.ExposureTime.numerator + "/" + imgInfo.ExposureTime.denominator + "s";
+
+                        //Append info to img
+                        $($this).after("<p class='imgInfo'>" + makeModel + " - " + isoValue + " - " + apertureValue + " - " + exposureTime + "</p>");
+                    } else {
+                        console.error("no exif data available")
+                    }
                 }
             });
 

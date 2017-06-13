@@ -1,4 +1,5 @@
-;(function(){
+;
+(function () {
 	'use strict';
 
 
@@ -11,26 +12,27 @@
 	// And because we don't need to register that one here we use only 2 arguments. (We could also
 	// use three of course)
 	photobook.await(
-		[        'exampleComponent'],
-		function( exampleComponent ){
-			console.log( "entry point is ready now. Let's use injected instance to print a message:" );
+		['exampleComponent'],
+		function (exampleComponent) {
+			//console.log("entry point is ready now. Let's use injected instance to print a message:");
 			exampleComponent.printSomething();
 		}
 	);
 
 
 	// Lets defer this definition somewhat to show that the loading is asynchronous.
-	setTimeout(function(){
+	setTimeout(function () {
 		// First argument is the name of this definition. So here our export will be named 'exampleComponent'.
 		// As second argument we list 'exampleService' as a dependency.
 		// And the last argument is the factory which gets called with the required dependencies.
-		photobook.await( 'exampleComponent',
-			/*njct*/['exampleService'],
-			function( exampleService ){ // <-- required dependencies get injected as arguments here.
+		photobook.await('exampleComponent',
+			/*njct*/
+			['exampleService'],
+			function (exampleService) { // <-- required dependencies get injected as arguments here.
 
 				// Create an example service.
 				var myComponent = {
-					printSomething: function(){
+					printSomething: function () {
 						exampleService.sayHello();
 					}
 				};
@@ -38,19 +40,20 @@
 				// There is a 'resolve' method provided on the 'this' element of the factory. We can
 				// use this to provide the value which then will get injected into the other
 				// definitions.
-				this.resolve( myComponent );
+				this.resolve(myComponent);
 			}
 		);
-	}, 200 );
+	}, 200);
 
 
-	photobook.await( 'exampleService',
-		/*njct*/[],
-		function(){
+	photobook.await('exampleService',
+		/*njct*/
+		[],
+		function () {
 			this.resolve({
 
-				sayHello: function(){
-					console.log( "exampleService says hello." );
+				sayHello: function () {
+					//console.log( "exampleService says hello." );
 				}
 
 			});
